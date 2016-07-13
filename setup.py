@@ -25,7 +25,7 @@ def get_readme():
 setup(
     name = 'django-auth0-auth',
     version = __import__('auth0_auth').get_version().replace(' ', '-'),
-    url = 'https://bitbucket.org/nextscreenlabs/django-auth0-auth',
+    url = 'https://bitbucket.org/megaman821/django-auth0-auth',
     author = 'Jason Christa',
     author_email = 'jason@zeitcode.com',
     description = 'Authenticated users using Auth0.',

@@ -1,5 +1,5 @@
-Django Azure AD Auth
-======================
+Django Auth0 Auth
+=================
 
 *Django Auth0 Auth* allows you to authenticate through Auth0.
 
