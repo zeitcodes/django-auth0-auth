@@ -42,6 +42,8 @@ class Auth0Backend(object):
         users = self.User.objects.filter(email=email)
         if len(users) == 0:
             user = self.create_user(email)
+            if user is None:
+                return None
         elif len(users) == 1:
             user = users[0]
         else:

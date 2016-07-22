@@ -1,4 +1,4 @@
-from base64 import b64decode
+from base64 import urlsafe_b64decode
 from django.conf import settings
 import json
 import jwt
@@ -41,10 +41,13 @@ def get_logout_url(redirect_uri, client_id=CLIENT_ID, domain=DOMAIN):
     )
 
 
-def get_email_from_token(token=None, key=b64decode(CLIENT_SECRET), audience=CLIENT_ID):
+def get_email_from_token(token=None, key=urlsafe_b64decode(CLIENT_SECRET), audience=CLIENT_ID):
     try:
         payload = jwt.decode(token, key=key, audience=audience)
-        return payload['email']
+        if 'email' in payload:
+            return payload['email']
+        elif 'sub' in payload:
+            return payload['sub'].split('|').pop()
     except (jwt.InvalidTokenError, IndexError) as e:
         pass
 
