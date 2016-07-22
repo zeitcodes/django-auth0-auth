@@ -23,6 +23,16 @@ def auth(request):
 
 
 @never_cache
+def logout(request):
+    backend = Auth0Backend()
+    redirect_uri = request.build_absolute_uri(settings.LOGOUT_URL)
+    logout_url = backend.logout_url(
+        redirect_uri=redirect_uri,
+    )
+    return HttpResponseRedirect(logout_url)
+
+
+@never_cache
 @csrf_exempt
 def callback(request):
     backend = Auth0Backend()
