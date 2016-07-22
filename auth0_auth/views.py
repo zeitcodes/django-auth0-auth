@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME, login
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.shortcuts import resolve_url
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import never_cache
 from urlparse import urlparse
@@ -25,7 +26,7 @@ def auth(request):
 @never_cache
 def logout(request):
     backend = Auth0Backend()
-    redirect_uri = request.build_absolute_uri(settings.LOGOUT_URL)
+    redirect_uri = request.build_absolute_uri(resolve_url(settings.LOGOUT_URL))
     logout_url = backend.logout_url(
         redirect_uri=redirect_uri,
     )
