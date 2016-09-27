@@ -43,7 +43,7 @@ def get_logout_url(redirect_uri, client_id=CLIENT_ID, domain=DOMAIN):
 
 def get_email_from_token(token=None, key=urlsafe_b64decode(CLIENT_SECRET), audience=CLIENT_ID):
     try:
-        payload = jwt.decode(token, key=key, audience=audience)
+        payload = jwt.decode(token, key=key, audience=audience, leeway=300)
         if 'email' in payload:
             return payload['email']
         elif 'sub' in payload:
