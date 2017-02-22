@@ -1,4 +1,4 @@
-from .utils import get_email_from_token, get_login_url, get_logout_url
+from .utils import get_email_from_token, is_email_verified_from_token, get_login_url, get_logout_url
 from base64 import urlsafe_b64encode
 from django.conf import settings
 try:
@@ -37,6 +37,9 @@ class Auth0Backend(object):
         email = get_email_from_token(token=token)
 
         if email is None:
+            return None
+
+        if not is_email_verified_from_token(token=token):
             return None
 
         users = self.User.objects.filter(email=email)

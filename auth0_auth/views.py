@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME, login
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import resolve_url
+from django.shortcuts import redirect, resolve_url
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import never_cache
 from urlparse import urlparse
@@ -45,7 +45,7 @@ def callback(request):
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(get_login_success_url(request))
-    return HttpResponseRedirect('failure')
+    return redirect('auth0_login')
 
 
 def get_login_success_url(request):

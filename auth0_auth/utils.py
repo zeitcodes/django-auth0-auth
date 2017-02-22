@@ -52,3 +52,13 @@ def get_email_from_token(token=None, key=urlsafe_b64decode(CLIENT_SECRET), audie
         pass
 
     return None
+
+
+def is_email_verified_from_token(token=None, key=urlsafe_b64decode(CLIENT_SECRET), audience=CLIENT_ID):
+    try:
+        payload = jwt.decode(token, key=key, audience=audience, leeway=300)
+        return payload.get('email_verified', True)
+    except (jwt.InvalidTokenError, IndexError) as e:
+        pass
+
+    return None
