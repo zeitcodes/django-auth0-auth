@@ -6,8 +6,12 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, resolve_url
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import never_cache
+import logging
 from urlparse import urlparse
 import uuid
+
+
+logger = logging.getLogger('auth0_auth')
 
 
 @never_cache
@@ -16,10 +20,12 @@ def auth(request):
     redirect_uri = request.build_absolute_uri(reverse(callback))
     state = str(uuid.uuid4())
     request.session['state'] = state
+    logger.info('auth view: session state - {}'.format(state))
     login_url = backend.login_url(
         redirect_uri=redirect_uri,
         state=state,
     )
+    logger.info('auth view: login url - {}'.format(login_url))
     return HttpResponseRedirect(login_url)
 
 
@@ -38,10 +44,14 @@ def logout(request):
 def callback(request):
     backend = Auth0Backend()
     original_state = request.session.get('state')
+    logger.info('callback view: session state - {}'.format(original_state))
     state = request.POST.get('state')
+    logger.info('callback view: request state - {}'.format(state))
     if original_state == state:
         token = request.POST.get('id_token')
+        logger.info('callback view: token - {}'.format(token))
         user = backend.authenticate(token=token)
+        logger.info('callback view: user - {}'.format(user))
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(get_login_success_url(request))
