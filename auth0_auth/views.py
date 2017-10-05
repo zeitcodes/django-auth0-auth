@@ -20,19 +20,18 @@ def auth(request):
     redirect_uri = request.build_absolute_uri(reverse(callback))
     state = str(uuid.uuid4())
     request.session['state'] = state
-    logger.info('auth view: session state - {}'.format(state))
     login_url = backend.login_url(
         redirect_uri=redirect_uri,
         state=state,
     )
-    logger.info('auth view: login url - {}'.format(login_url))
     return HttpResponseRedirect(login_url)
 
 
 @never_cache
 def logout(request):
     backend = Auth0Backend()
-    redirect_uri = request.build_absolute_uri(resolve_url(settings.LOGOUT_URL))
+    logout_redirect_url = getattr(settings, 'LOGOUT_REDIRECT_URL', '/')
+    redirect_uri = request.build_absolute_uri(resolve_url(logout_redirect_url))
     logout_url = backend.logout_url(
         redirect_uri=redirect_uri,
     )
@@ -44,17 +43,16 @@ def logout(request):
 def callback(request):
     backend = Auth0Backend()
     original_state = request.session.get('state')
-    logger.info('callback view: session state - {}'.format(original_state))
     state = request.POST.get('state')
-    logger.info('callback view: request state - {}'.format(state))
     if original_state == state:
         token = request.POST.get('id_token')
-        logger.info('callback view: token - {}'.format(token))
+        logger.debug('Token {} received'.format(token))
         user = backend.authenticate(token=token)
-        logger.info('callback view: user - {}'.format(user))
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(get_login_success_url(request))
+    else:
+        logger.debug('Expected state {} but received {}.'.format(original_state, state))
     return redirect('auth0_login')
 
 

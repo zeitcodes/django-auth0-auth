@@ -9,10 +9,6 @@ except ImportError:
     def get_user_model(*args, **kwargs):
         return User
 from hashlib import sha1
-import logging
-
-
-logger = logging.getLogger('auth0_auth')
 
 
 class Auth0Backend(object):
@@ -35,19 +31,16 @@ class Auth0Backend(object):
         return get_logout_url(redirect_uri=redirect_uri)
 
     def authenticate(self, token=None, **kwargs):
-        logger.info('authenticate: token - {}'.format(token))
         if token is None:
             return None
 
         email = get_email_from_token(token=token)
 
-        logger.info('authenticate: email - {}'.format(email))
         if email is None:
             return None
 
         email_verified = is_email_verified_from_token(token=token)
 
-        logger.info('authenticate: email verified - {}'.format(email_verified))
         if not email_verified:
             return None
 

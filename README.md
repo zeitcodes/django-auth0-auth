@@ -44,10 +44,22 @@ Auth0 client id.
 Auth0 client secret.
 
 
+###AUTH0_SECRECT_BASE64_ENCODED
+
+**default:** `False`
+Flag if Auth0 client secret is base64 encoded.
+
+
 ###AUTH0_SCOPE
 
 **default:** `'openid email'`
 OAuth scope parameter.
+
+
+###AUTH0_RESPONSE_TYPE
+
+**default:** `'token'`
+OAuth response type parameter.
 
 
 ###AUTH0_USER_CREATION
@@ -57,7 +69,7 @@ Allow creation of new users after successful authentication.
 
 
 Lock Signin
-----------------
+------------
 To log in using the JavaScript based **Lock** dialog, add the following to your project.
 
 
@@ -99,3 +111,21 @@ Add the following JavaScript snippet to your `base.html` below your sites other 
 Add a login button to your `base.html`.
 
     <button onclick="window.signin();">Login</button>
+
+Logging
+-------
+To enable logging add `auth0_auth` to `LOGGING['loggers']` options.
+
+```python
+LOGGING = {
+    ...,
+    'loggers': {
+        ...,
+        'auth0_auth': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        }
+    }
+}
+```
+
