@@ -1,6 +1,6 @@
 from .backends import Auth0Backend
 from django.conf import settings
-from django.contrib.auth import REDIRECT_FIELD_NAME, login
+from django.contrib.auth import REDIRECT_FIELD_NAME, login, logout as auth_logout
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, resolve_url
@@ -35,6 +35,7 @@ def logout(request):
     logout_url = backend.logout_url(
         redirect_uri=redirect_uri,
     )
+    auth_logout(request)
     return HttpResponseRedirect(logout_url)
 
 
