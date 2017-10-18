@@ -44,7 +44,7 @@ Auth0 client id.
 Auth0 client secret.
 
 
-###AUTH0_SECRECT_BASE64_ENCODED
+###AUTH0_SECRET_BASE64_ENCODED
 
 **default:** `False`
 Flag if Auth0 client secret is base64 encoded.

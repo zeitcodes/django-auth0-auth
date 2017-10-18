@@ -18,6 +18,9 @@ logger = logging.getLogger('auth0_auth')
 def auth(request):
     backend = Auth0Backend()
     redirect_uri = request.build_absolute_uri(reverse(callback))
+    redirect_to = request.GET.get(REDIRECT_FIELD_NAME, '')
+    if redirect_to:
+        redirect_uri = '{}?{}={}'.format(redirect_uri, REDIRECT_FIELD_NAME, redirect_to)
     state = str(uuid.uuid4())
     request.session['state'] = state
     login_url = backend.login_url(

@@ -15,7 +15,7 @@ SCOPE = getattr(settings, 'AUTH0_SCOPE', 'openid email')
 RESPONSE_TYPE = getattr(settings, 'AUTH0_RESPONSE_TYPE', 'token')
 CLIENT_ID = getattr(settings, 'AUTH0_CLIENT_ID')
 CLIENT_SECRET = getattr(settings, 'AUTH0_CLIENT_SECRET')
-SECRET_BASE64_ENCODED = getattr(settings, 'AUTH0_SECRECT_BASE64_ENCODED', False)
+SECRET_BASE64_ENCODED = getattr(settings, 'AUTH0_SECRET_BASE64_ENCODED', False)
 if SECRET_BASE64_ENCODED:
     try:
         CLIENT_SECRET = urlsafe_b64decode(CLIENT_SECRET)
