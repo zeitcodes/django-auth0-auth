@@ -1,13 +1,16 @@
 from .backends import Auth0Backend
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME, login, logout as auth_logout
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, resolve_url
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import never_cache
 import logging
-from urlparse import urlparse
+try:
+    from urlparse import urlparse
+except ImportError:
+    from urllib.parse import urlparse
 import uuid
 
 

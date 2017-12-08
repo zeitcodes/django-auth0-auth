@@ -1,10 +1,11 @@
 from base64 import urlsafe_b64decode
 from django.conf import settings
-import json
 import jwt
 import logging
-import requests
-from urllib import urlencode
+try:
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlencode
 
 
 logger = logging.getLogger('auth0_auth')
