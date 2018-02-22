@@ -1,9 +1,13 @@
 from .backends import Auth0Backend
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME, login, logout as auth_logout
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, resolve_url
-from django.urls import reverse
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import never_cache
 import logging
@@ -58,6 +62,9 @@ def callback(request):
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(get_login_success_url(request))
+        else:
+            logger.debug('Authenticated user not in user database.')
+            raise PermissionDenied
     else:
         logger.debug('Expected state {} but received {}.'.format(original_state, state))
     return redirect('auth0_login')
