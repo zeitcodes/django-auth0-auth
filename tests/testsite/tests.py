@@ -10,9 +10,9 @@ class LoginTest(TestCase):
     def test_login_url(self):
         url = reverse('auth0_login')
         response = self.client.get(url)
-        print response.url
+        print(response.url)
 
     def test_logout_url(self):
         url = reverse('auth0_logout')
         response = self.client.get(url)
-        print response.url
+        print(response.url)

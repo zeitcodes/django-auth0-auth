@@ -53,8 +53,14 @@ class Auth0Backend(object):
             user = users[0]
         else:
             return None
+        if not self.user_can_authenticate(user):
+            return None
         user.backend = '{}.{}'.format(self.__class__.__module__, self.__class__.__name__)
         return user
+
+    def user_can_authenticate(self, user):
+        is_active = getattr(user, 'is_active', None)
+        return is_active or is_active is None
 
     def get_user(self, user_id):
         try:
