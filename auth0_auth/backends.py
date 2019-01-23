@@ -1,6 +1,17 @@
-from .utils import get_email_from_token, is_email_verified_from_token, get_login_url, get_logout_url
 from base64 import urlsafe_b64encode
+from hashlib import sha1
+from uuid import uuid4
+
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
+
+from .utils import (
+    get_email_from_token,
+    get_login_url,
+    get_logout_url,
+    is_email_verified_from_token,
+)
+
 try:
     from django.contrib.auth import get_user_model
 except ImportError:
@@ -8,11 +19,18 @@ except ImportError:
 
     def get_user_model(*args, **kwargs):
         return User
-from hashlib import sha1
+
+
+if getattr(settings, "SESSION_COOKIE_SAMESITE"):
+    raise ImproperlyConfigured(
+        """Please set the SESSION_COOKIE_SAMESITE to None in your settings.py. To prevent replay 
+        attacks the callback URL verifies a unique state string stored the session is equal value 
+        that is posted back by Auth0."""
+    )
 
 
 class Auth0Backend(object):
-    USER_CREATION = getattr(settings, 'AUTH0_USER_CREATION', True)
+    USER_CREATION = getattr(settings, "AUTH0_USER_CREATION", True)
 
     supports_anonymous_user = False
     supports_inactive_user = True
@@ -22,10 +40,7 @@ class Auth0Backend(object):
         self.User = get_user_model()
 
     def login_url(self, redirect_uri, state):
-        return get_login_url(
-            redirect_uri=redirect_uri,
-            state=state
-        )
+        return get_login_url(redirect_uri=redirect_uri, state=state)
 
     def logout_url(self, redirect_uri):
         return get_logout_url(redirect_uri=redirect_uri)
@@ -55,11 +70,13 @@ class Auth0Backend(object):
             return None
         if not self.user_can_authenticate(user):
             return None
-        user.backend = '{}.{}'.format(self.__class__.__module__, self.__class__.__name__)
+        user.backend = "{}.{}".format(
+            self.__class__.__module__, self.__class__.__name__
+        )
         return user
 
     def user_can_authenticate(self, user):
-        is_active = getattr(user, 'is_active', None)
+        is_active = getattr(user, "is_active", None)
         return is_active or is_active is None
 
     def get_user(self, user_id):
@@ -71,8 +88,8 @@ class Auth0Backend(object):
 
     def create_user(self, email):
         if self.USER_CREATION:
-            username_field = getattr(self.User, 'USERNAME_FIELD', 'username')
-            user_kwargs = {'email': email}
+            username_field = getattr(self.User, "USERNAME_FIELD", "username")
+            user_kwargs = {"email": email}
             user_kwargs[username_field] = self.username_generator(email)
             return self.User.objects.create_user(**user_kwargs)
         else:
@@ -80,4 +97,4 @@ class Auth0Backend(object):
 
     @staticmethod
     def username_generator(email):
-        return urlsafe_b64encode(sha1(email.encode('utf-8')).digest()).rstrip(b'=')
+        return str(uuid4())

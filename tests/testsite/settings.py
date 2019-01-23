@@ -12,7 +12,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'o+%5imry6l=0c(tpmpgl(6y(j3_bsp7!lh7)$u7w+cgpw+dv@+'
+SECRET_KEY = "o+%5imry6l=0c(tpmpgl(6y(j3_bsp7!lh7)$u7w+cgpw+dv@+"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -23,55 +23,54 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'auth0_auth',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "auth0_auth",
 )
 
-MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
+MIDDLEWARE = (
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
 
-ROOT_URLCONF = 'testsite.urls'
+ROOT_URLCONF = "testsite.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'auth0_auth.context_processors.auth0',
-            ],
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "auth0_auth.context_processors.auth0",
+            ]
         },
-    },
+    }
 ]
 
-WSGI_APPLICATION = 'testsite.wsgi.application'
+WSGI_APPLICATION = "testsite.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
 
@@ -79,9 +78,9 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -93,35 +92,28 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'auth0_auth.backends.Auth0Backend',
+    "django.contrib.auth.backends.ModelBackend",
+    "auth0_auth.backends.Auth0Backend",
 )
 
-LOGIN_URL = 'auth0_login'
-LOGIN_REDIRECT_URL = '/login_successful/'
-LOGOUT_URL = 'auth0_logout'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = "auth0_login"
+LOGIN_REDIRECT_URL = "/login_successful/"
+LOGOUT_URL = "auth0_logout"
+LOGOUT_REDIRECT_URL = "/"
 
-AUTH0_DOMAIN = 'YOUR_DOMAIN'
-AUTH0_CLIENT_ID = 'YOUR_CLIENT_ID'
-AUTH0_CLIENT_SECRET = 'YOUR_CLIENT_SECRET'
+AUTH0_DOMAIN = "YOUR_DOMAIN"
+AUTH0_CLIENT_ID = "YOUR_CLIENT_ID"
+AUTH0_CLIENT_SECRET = "YOUR_CLIENT_SECRET"
+
+SESSION_COOKIE_SAMESITE = None
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'auth0_auth': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-    },
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "loggers": {"auth0_auth": {"handlers": ["console"], "level": "DEBUG"}},
 }
