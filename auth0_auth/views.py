@@ -64,7 +64,7 @@ def callback(request):
             return HttpResponseRedirect(get_login_success_url(request))
         else:
             logger.debug('Authenticated user not in user database.')
-            raise PermissionDenied
+            raise PermissionDenied()
     else:
         logger.debug('Expected state {} but received {}.'.format(original_state, state))
     return redirect('auth0_login')
